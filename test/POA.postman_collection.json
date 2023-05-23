@@ -1,0 +1,67 @@
+{
+	"info": {
+		"_postman_id": "bcc86fcb-c125-4293-9af9-54b7a4a5e684",
+		"name": "POA",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23848688"
+	},
+	"item": [
+		{
+			"name": "USERS",
+			"item": [
+				{
+					"name": "EXCEPTIONS",
+					"item": []
+				},
+				{
+					"name": "get_all",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PROCESSES",
+			"item": []
+		},
+		{
+			"name": "AREAS",
+			"item": []
+		},
+		{
+			"name": "MEASURES",
+			"item": []
+		},
+		{
+			"name": "POA_ACTIIVITIES",
+			"item": []
+		},
+		{
+			"name": "QUARTERLY_GOALS",
+			"item": []
+		},
+		{
+			"name": "QUARTERLY_REPORTS",
+			"item": []
+		},
+		{
+			"name": "AREA_PROCESSES",
+			"item": []
+		},
+		{
+			"name": "PERIODS",
+			"item": []
+		},
+		{
+			"name": "ANNUAL_PROGRAMMES",
+			"item": []
+		},
+		{
+			"name": "ACTIVITY",
+			"item": []
+		}
+	]
+}
