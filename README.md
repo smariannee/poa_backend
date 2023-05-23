@@ -6,11 +6,13 @@
 
 ### About 
 
-It´s a test server to learn tsc and mainly clean architecure
+It´s a api to project apo  job 
 
 #### Collaborators
 
+- Santos Pérez Valeria Marianne
 - Herrera Hernandez Joel Alejandro
+
 
 ### Documentation
 
@@ -21,8 +23,6 @@ It´s a test server to learn tsc and mainly clean architecure
 ## First steps to set up the project with npm 
 
 ---
-
-
 
 **Dependencies project**
 
