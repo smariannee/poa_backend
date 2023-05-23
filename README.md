@@ -39,8 +39,7 @@ It´s a test server to learn tsc and mainly clean architecure
  + Just see the client request  - `npm i morgan  -D`
  + Install environment typescript -`npm i typescript -D`
  + Create tsc configuration file -`npx tsc --init`
- + Run project `npm i -g nodemon -D`
- + Run two process  `npm i concurrently -D`
+ + Run project `npm i -D ts-node-dev`
  + Compatibility  `npm i @types/express @types/cors @types/pg @types/jsonwebtoken  @types/bcryptjs -D `
 
 Remove dependencies `npm uninstall <package>`
