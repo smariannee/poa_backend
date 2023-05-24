@@ -6,8 +6,7 @@ export type ResponseApi<T> = {
     code: number,
     error?: boolean,
     message?: string,
-    entity?: T,
-    entities?: T[],
+    data?: T | T[],
     count?: number
     token?: string
 }
