@@ -1,4 +1,3 @@
-import {Role} from "../entities/user";
 
 /**
  * Only use specify data
@@ -10,7 +9,7 @@ export type GetUserDto = {
     lastname: string,
     email: string,
     status: boolean,
-    role: Role
+    role:  string
     password?: string,
 }
 
@@ -19,8 +18,7 @@ export type SaveUserDto = {
     lastname: string,
     email: string,
     password: string,
-    status: boolean,
-    role: Role
+    role:  string
 }
 
 export type UpdateUserDto = {
@@ -30,6 +28,11 @@ export type UpdateUserDto = {
     lastname: string,
     email: string,
     password: string,
+    role:  string
+}
+
+export type UpdateStatusUserDto = {
+    id: number,
     status: boolean,
-    role: Role
+
 }

@@ -464,7 +464,7 @@ CREATE TABLE public.users (
     lastname character varying(30) NOT NULL,
     email character varying(50) NOT NULL,
     password text NOT NULL,
-    status boolean NOT NULL,
+    status boolean NOT NULL default true,
     role public.roles NOT NULL
 );
 

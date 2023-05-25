@@ -16,8 +16,8 @@ const router = Router()
 router.get('/',UserController.findUsers)
 router.get('/:id' , UserController.findById)
 router.post('/', UserController.createUser)
-// router.put('/:id', UserController.updateUser)
-// router.delete('/:id', UserController.deleteUser)
+router.put('/:id', UserController.updateUser)
+router.patch('/:id', UserController.updateStatusUser)
 
 
 

@@ -1,6 +1,6 @@
 import {UseCase} from "../../../kernel/contracts";
-import {GetUserDto, SaveUserDto, UpdateUserDto} from "../adapters/userDTO";
-import {User} from "../entities/user";
+import {GetUserDto, SaveUserDto, UpdateStatusUserDto, UpdateUserDto} from "../adapters/userDTO";
+import {Role, User} from "../entities/user";
 import {UserRepository} from "./ports/user.repository";
 
 
@@ -20,10 +20,12 @@ export class GetUserInteractor implements UseCase<number, User> {
     }
 }
 
-export class SaveUserInteractor implements UseCase<SaveUserDto, User> {
+export class CreateUserInteractor implements UseCase<SaveUserDto, User> {
     constructor(private readonly userRepository: UserRepository) {
     }
     async execute(payload: SaveUserDto): Promise<User> {
+        const rol:Role = payload['role'] as Role
+        if (!Role[rol]) throw Error('Error role')
         return this.userRepository.create(payload)
     }
 }
@@ -37,10 +39,10 @@ export class UpdateUserInteractor implements UseCase<UpdateUserDto, User> {
     }
 }
 
-export class UpdateStatusUserInteractor implements UseCase<number, User> {
+export class UpdateStatusUserInteractor implements UseCase<UpdateStatusUserDto, User> {
     constructor(private readonly userRepository: UserRepository) {
     }
-    execute(id: number): Promise<User> {
-        return this.userRepository.updateStatus(id);
+    execute(user:UpdateStatusUserDto): Promise<User> {
+        return this.userRepository.updateStatus(user);
     }
 }

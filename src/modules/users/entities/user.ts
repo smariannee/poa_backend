@@ -10,6 +10,6 @@ export type User = Entity<number> & {
 }
 
 export enum Role {
-    Administrator,Director,Assistant
+    Administrator = 'Administrator',Director= 'Director',Assistant = 'Assistant'
 }
 

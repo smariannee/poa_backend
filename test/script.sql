@@ -10,7 +10,7 @@ CREATE TABLE users (
     lastname varchar(30) not null,
     email varchar(50) not null,
     password text not null,
-    status boolean not null,
+    status boolean not null default true,
     role roles not null
 );
 

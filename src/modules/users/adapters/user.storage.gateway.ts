@@ -2,17 +2,18 @@
 import {User} from '../entities/user';
 import {UserRepository} from '../use-cases/ports/user.repository';
 import {QueryResult} from "pg";
-import {SaveUserDto, UpdateUserDto} from "./userDTO";
+import {SaveUserDto, UpdateStatusUserDto, UpdateUserDto} from "./userDTO";
 import {pool} from "../../../utils/dbconfig";
 
 export class UserStorageGateway implements UserRepository {
 
-    async create(payload: SaveUserDto): Promise<User> {
+    async create(user: SaveUserDto): Promise<User> {
         try {
-            const {name, lastname, email, password, status, role} = payload;
+            const {name, lastname, email, password, role} = user;
+
             const response = await pool.query(
-                'INSERT INTO users (name, lastname, email, password, status, role) values ($1, $2, $3, $4, $5, $6) RETURNING *',
-                [name, lastname, email, password, status, role]
+                'INSERT INTO users (name, lastname, email, password, role) values ($1, $2, $3, $4, $5) RETURNING *',
+                [name, lastname, email, password, role]
             );
             return response.rows[0] as User;
         } catch (error) {
@@ -23,7 +24,7 @@ export class UserStorageGateway implements UserRepository {
     async findById(id: number): Promise<User> {
         try {
             const response = await pool.query(
-                'SELECT * FROM users WHERE id = $1',
+                'SELECT id,name,lastname,email,status,role FROM users WHERE id = $1',
                 [id]
             );
             return response.rows[0] as User;
@@ -34,7 +35,7 @@ export class UserStorageGateway implements UserRepository {
 
     async findAll(): Promise<User[]> {
         try {
-            const response = await pool.query('SELECT * FROM users');
+            const response = await pool.query('SELECT id,name,lastname,email,status,role FROM users');
             return response.rows;
         } catch (error) {
             throw new Error('Error database' + error);
@@ -42,11 +43,31 @@ export class UserStorageGateway implements UserRepository {
     }
 
     async update(user: UpdateUserDto): Promise<User> {
-        throw new Error('NOT implement');
+        try {
+            const {id, name, lastname, email, password, role} = user;
+
+            const response = await pool.query(
+                'UPDATE users SET name = $1, lastname= $2, email=$3, password=$4, role=$5 WHERE id = $6 RETURNING *',
+                [name, lastname, email, password, role, id]
+            );
+            return response.rows[0] as User;
+        } catch (error) {
+            throw new Error('Error database' + error);
+        }
     }
 
-    async updateStatus(id: number): Promise<User> {
-        throw new Error('NOT implement');
+    async updateStatus(user: UpdateStatusUserDto): Promise<User> {
+        try {
+            const {id, status} = user;
+
+            const response = await pool.query(
+                'UPDATE users SET status=$1 WHERE id = $2 RETURNING *',
+                [status, id]
+            );
+            return response.rows[0] as User;
+        } catch (error) {
+            throw new Error('Error database' + error);
+        }
     }
 
     async existByEmail(email: string): Promise<boolean> {

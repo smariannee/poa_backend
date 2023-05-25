@@ -15,9 +15,194 @@
 				},
 				{
 					"name": "get_all",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/poa/users/",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"poa",
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_one",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/poa/users/10",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"poa",
+								"users",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "insert_one",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const generateRandomString = (length) => {\r",
+									"    let result = '';\r",
+									"    const characters = 'abcdefghijklmnopqrstuvwxyz';\r",
+									"    for (let i = 0; i < length; i++) {\r",
+									"        result += characters.charAt(Math.floor(Math.random() * \r",
+									"        characters.length));\r",
+									"    }\r",
+									"    return result + \"@utez.edu.mx\";\r",
+									"}\r",
+									"\r",
+									"pm.variables.set(\"email\", generateRandomString(3));\r",
+									"console.log(pm.variables.get('email'))"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Alexx\",\r\n    \"lastname\": \"Herrera\",\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"123\",\r\n    \"status\": true,\r\n    \"role\": \"Director\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/poa/users",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"poa",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_one",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const generateRandomString = (length) => {\r",
+									"    let result = '';\r",
+									"    const characters = 'abcdefghijklmnopqrstuvwxyz';\r",
+									"    for (let i = 0; i < length; i++) {\r",
+									"        result += characters.charAt(Math.floor(Math.random() * \r",
+									"        characters.length));\r",
+									"    }\r",
+									"    return result + \"@utez.edu.mx\";\r",
+									"}\r",
+									"\r",
+									"pm.variables.set(\"email\", generateRandomString(3));\r",
+									"console.log(pm.variables.get('email'))"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Alexx\",\r\n    \"lastname\": \"Herrera\",\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"123\",\r\n    \"role\": \"Director\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/poa/users/10",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"poa",
+								"users",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "status_update_one",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/poa/users/10",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"poa",
+								"users",
+								"10"
+							]
+						}
 					},
 					"response": []
 				}
@@ -62,6 +247,30 @@
 		{
 			"name": "ACTIVITY",
 			"item": []
+		},
+		{
+			"name": "test",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/test",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"test"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": ""
 		}
 	]
 }
