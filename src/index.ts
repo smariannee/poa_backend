@@ -2,6 +2,7 @@ import * as dotenv from "dotenv";
 import express, {Application, Request, Response} from "express";
 import cors from "cors";
 import userRoutes from "./modules/users/adapters/user.routes";
+import areaRoutes from "./modules/areas/adapters/area.routes";
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ app.get('/test', (req:Request, res:Response) => res.send('Welcome to POA (Annual
 
 
 app.use(`/${API}/users`,userRoutes);
+app.use(`/${API}/areas`,areaRoutes);
 
 
 

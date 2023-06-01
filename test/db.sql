@@ -53,19 +53,6 @@ CREATE TYPE public.roles AS ENUM (
 ALTER TYPE public.roles OWNER TO postgres;
 
 --
--- Name: status; Type: TYPE; Schema: public; Owner: postgres
---
-
-CREATE TYPE public.status AS ENUM (
-    'Approved',
-    'Rejected',
-    'Pending'
-);
-
-
-ALTER TYPE public.status OWNER TO postgres;
-
---
 -- Name: status_activity; Type: TYPE; Schema: public; Owner: postgres
 --
 
@@ -78,6 +65,41 @@ CREATE TYPE public.status_activity AS ENUM (
 
 ALTER TYPE public.status_activity OWNER TO postgres;
 
+--
+-- Name: status_format; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.status_format AS ENUM (
+    'Approved',
+    'Rejected',
+    'Pending'
+);
+
+
+ALTER TYPE public.status_format OWNER TO postgres;
+
+--
+-- Name: insert_users(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.insert_users() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF (new.role = 'Director') THEN
+        INSERT INTO directors(director_user) VALUES(new.id);
+    END IF;
+    IF (new.role = 'Assistant') THEN
+        INSERT INTO assistants(assistant_user) VALUES(new.id);
+    END IF;
+    RETURN new;
+END;
+
+$$;
+
+
+ALTER FUNCTION public.insert_users() OWNER TO postgres;
+
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -89,10 +111,11 @@ SET default_table_access_method = heap;
 CREATE TABLE public.activities (
     id integer NOT NULL,
     activity character varying NOT NULL,
-    status boolean NOT NULL,
-    indicator_num integer NOT NULL,
+    status boolean DEFAULT true NOT NULL,
+    indicator_number integer NOT NULL,
     indicator_type integer NOT NULL,
-    measure_unit integer NOT NULL
+    measure_unit integer NOT NULL,
+    area integer NOT NULL
 );
 
 
@@ -126,7 +149,7 @@ ALTER SEQUENCE public.activities_id_seq OWNED BY public.activities.id;
 
 CREATE TABLE public.annual_programmes (
     id integer NOT NULL,
-    status public.status NOT NULL,
+    status_poa public.status_format DEFAULT 'Pending'::public.status_format NOT NULL,
     dates json,
     pdf_document text,
     area_process integer NOT NULL,
@@ -199,8 +222,8 @@ ALTER SEQUENCE public.area_processes_id_seq OWNED BY public.area_processes.id;
 
 CREATE TABLE public.areas (
     id integer NOT NULL,
-    area character varying(50) NOT NULL,
-    status boolean NOT NULL,
+    title character varying NOT NULL,
+    status boolean DEFAULT true NOT NULL,
     director integer,
     assistant integer
 );
@@ -231,13 +254,81 @@ ALTER SEQUENCE public.areas_id_seq OWNED BY public.areas.id;
 
 
 --
+-- Name: assistants; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.assistants (
+    id integer NOT NULL,
+    assistant_user integer NOT NULL
+);
+
+
+ALTER TABLE public.assistants OWNER TO postgres;
+
+--
+-- Name: assistants_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.assistants_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.assistants_id_seq OWNER TO postgres;
+
+--
+-- Name: assistants_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.assistants_id_seq OWNED BY public.assistants.id;
+
+
+--
+-- Name: directors; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.directors (
+    id integer NOT NULL,
+    director_user integer NOT NULL
+);
+
+
+ALTER TABLE public.directors OWNER TO postgres;
+
+--
+-- Name: directors_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.directors_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.directors_id_seq OWNER TO postgres;
+
+--
+-- Name: directors_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.directors_id_seq OWNED BY public.directors.id;
+
+
+--
 -- Name: measure_units; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.measure_units (
     id integer NOT NULL,
     measure_unit character varying NOT NULL,
-    status boolean NOT NULL
+    status boolean DEFAULT true NOT NULL
 );
 
 
@@ -271,7 +362,7 @@ ALTER SEQUENCE public.measure_units_id_seq OWNED BY public.measure_units.id;
 
 CREATE TABLE public.periods (
     id integer NOT NULL,
-    period character varying NOT NULL,
+    title character varying NOT NULL,
     requested_date date NOT NULL,
     due_date date NOT NULL,
     adjourned_date date
@@ -308,9 +399,9 @@ ALTER SEQUENCE public.periods_id_seq OWNED BY public.periods.id;
 
 CREATE TABLE public.poa_activities (
     id integer NOT NULL,
-    status public.status_activity NOT NULL,
+    status_activity public.status_activity DEFAULT 'In Process'::public.status_activity NOT NULL,
     annual_goal integer NOT NULL,
-    observations text,
+    observations json,
     evidence text,
     poa integer NOT NULL,
     activity integer NOT NULL
@@ -347,10 +438,10 @@ ALTER SEQUENCE public.poa_activities_id_seq OWNED BY public.poa_activities.id;
 
 CREATE TABLE public.processes (
     id integer NOT NULL,
-    process character varying NOT NULL,
+    title character varying NOT NULL,
     process_number integer NOT NULL,
     sheet_number integer NOT NULL,
-    status boolean NOT NULL
+    status boolean DEFAULT true NOT NULL
 );
 
 
@@ -423,8 +514,8 @@ ALTER SEQUENCE public.quarterly_goals_id_seq OWNED BY public.quarterly_goals.id;
 
 CREATE TABLE public.quarterly_reports (
     id integer NOT NULL,
+    status_quarterly_report public.status_format DEFAULT 'Pending'::public.status_format NOT NULL,
     pdf_document text,
-    status public.status NOT NULL,
     period integer NOT NULL,
     poa integer NOT NULL
 );
@@ -460,11 +551,11 @@ ALTER SEQUENCE public.quarterly_reports_id_seq OWNED BY public.quarterly_reports
 
 CREATE TABLE public.users (
     id integer NOT NULL,
-    name character varying(30) NOT NULL,
-    lastname character varying(30) NOT NULL,
-    email character varying(50) NOT NULL,
+    name character varying NOT NULL,
+    lastname character varying NOT NULL,
+    email character varying NOT NULL,
     password text NOT NULL,
-    status boolean NOT NULL default true,
+    status boolean DEFAULT true NOT NULL,
     role public.roles NOT NULL
 );
 
@@ -522,6 +613,20 @@ ALTER TABLE ONLY public.areas ALTER COLUMN id SET DEFAULT nextval('public.areas_
 
 
 --
+-- Name: assistants id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.assistants ALTER COLUMN id SET DEFAULT nextval('public.assistants_id_seq'::regclass);
+
+
+--
+-- Name: directors id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.directors ALTER COLUMN id SET DEFAULT nextval('public.directors_id_seq'::regclass);
+
+
+--
 -- Name: measure_units id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -574,7 +679,7 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 -- Data for Name: activities; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.activities (id, activity, status, indicator_num, indicator_type, measure_unit) FROM stdin;
+COPY public.activities (id, activity, status, indicator_number, indicator_type, measure_unit, area) FROM stdin;
 \.
 
 
@@ -582,7 +687,7 @@ COPY public.activities (id, activity, status, indicator_num, indicator_type, mea
 -- Data for Name: annual_programmes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.annual_programmes (id, status, dates, pdf_document, area_process, period) FROM stdin;
+COPY public.annual_programmes (id, status_poa, dates, pdf_document, area_process, period) FROM stdin;
 \.
 
 
@@ -598,7 +703,25 @@ COPY public.area_processes (id, area, process) FROM stdin;
 -- Data for Name: areas; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.areas (id, area, status, director, assistant) FROM stdin;
+COPY public.areas (id, title, status, director, assistant) FROM stdin;
+\.
+
+
+--
+-- Data for Name: assistants; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.assistants (id, assistant_user) FROM stdin;
+1	2
+\.
+
+
+--
+-- Data for Name: directors; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.directors (id, director_user) FROM stdin;
+1	1
 \.
 
 
@@ -614,7 +737,7 @@ COPY public.measure_units (id, measure_unit, status) FROM stdin;
 -- Data for Name: periods; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.periods (id, period, requested_date, due_date, adjourned_date) FROM stdin;
+COPY public.periods (id, title, requested_date, due_date, adjourned_date) FROM stdin;
 \.
 
 
@@ -622,7 +745,7 @@ COPY public.periods (id, period, requested_date, due_date, adjourned_date) FROM 
 -- Data for Name: poa_activities; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.poa_activities (id, status, annual_goal, observations, evidence, poa, activity) FROM stdin;
+COPY public.poa_activities (id, status_activity, annual_goal, observations, evidence, poa, activity) FROM stdin;
 \.
 
 
@@ -630,7 +753,7 @@ COPY public.poa_activities (id, status, annual_goal, observations, evidence, poa
 -- Data for Name: processes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.processes (id, process, process_number, sheet_number, status) FROM stdin;
+COPY public.processes (id, title, process_number, sheet_number, status) FROM stdin;
 \.
 
 
@@ -646,7 +769,7 @@ COPY public.quarterly_goals (id, quarter_number, programmed_goal, achieved_goal,
 -- Data for Name: quarterly_reports; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.quarterly_reports (id, pdf_document, status, period, poa) FROM stdin;
+COPY public.quarterly_reports (id, status_quarterly_report, pdf_document, period, poa) FROM stdin;
 \.
 
 
@@ -655,6 +778,8 @@ COPY public.quarterly_reports (id, pdf_document, status, period, poa) FROM stdin
 --
 
 COPY public.users (id, name, lastname, email, password, status, role) FROM stdin;
+1	Marianne	Santos	20213tn140@utez.edu.mx	M08121971.	t	Director
+2	Joel	Herrera	20213tn019@utez.edu.mx	J12345678.	t	Assistant
 \.
 
 
@@ -684,6 +809,20 @@ SELECT pg_catalog.setval('public.area_processes_id_seq', 1, false);
 --
 
 SELECT pg_catalog.setval('public.areas_id_seq', 1, false);
+
+
+--
+-- Name: assistants_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.assistants_id_seq', 1, true);
+
+
+--
+-- Name: directors_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.directors_id_seq', 1, true);
 
 
 --
@@ -732,7 +871,7 @@ SELECT pg_catalog.setval('public.quarterly_reports_id_seq', 1, false);
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 1, false);
+SELECT pg_catalog.setval('public.users_id_seq', 2, true);
 
 
 --
@@ -765,6 +904,22 @@ ALTER TABLE ONLY public.area_processes
 
 ALTER TABLE ONLY public.areas
     ADD CONSTRAINT areas_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: assistants assistants_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.assistants
+    ADD CONSTRAINT assistants_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: directors directors_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.directors
+    ADD CONSTRAINT directors_pkey PRIMARY KEY (id);
 
 
 --
@@ -824,6 +979,13 @@ ALTER TABLE ONLY public.users
 
 
 --
+-- Name: users insert_users_trigger; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER insert_users_trigger AFTER INSERT ON public.users FOR EACH ROW EXECUTE FUNCTION public.insert_users();
+
+
+--
 -- Name: poa_activities fk_activity; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -832,11 +994,19 @@ ALTER TABLE ONLY public.poa_activities
 
 
 --
--- Name: activities fk_activity_measure; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: activities fk_activity_area; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.activities
-    ADD CONSTRAINT fk_activity_measure FOREIGN KEY (measure_unit) REFERENCES public.measure_units(id);
+    ADD CONSTRAINT fk_activity_area FOREIGN KEY (area) REFERENCES public.areas(id);
+
+
+--
+-- Name: activities fk_activity_measure_unit; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.activities
+    ADD CONSTRAINT fk_activity_measure_unit FOREIGN KEY (measure_unit) REFERENCES public.measure_units(id);
 
 
 --
@@ -852,7 +1022,7 @@ ALTER TABLE ONLY public.area_processes
 --
 
 ALTER TABLE ONLY public.areas
-    ADD CONSTRAINT fk_area_assistant FOREIGN KEY (assistant) REFERENCES public.users(id);
+    ADD CONSTRAINT fk_area_assistant FOREIGN KEY (assistant) REFERENCES public.assistants(id);
 
 
 --
@@ -860,15 +1030,31 @@ ALTER TABLE ONLY public.areas
 --
 
 ALTER TABLE ONLY public.areas
-    ADD CONSTRAINT fk_area_director FOREIGN KEY (director) REFERENCES public.users(id);
+    ADD CONSTRAINT fk_area_director FOREIGN KEY (director) REFERENCES public.directors(id);
 
 
 --
--- Name: quarterly_goals fk_goal_activity; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: assistants fk_assistant_user; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.assistants
+    ADD CONSTRAINT fk_assistant_user FOREIGN KEY (assistant_user) REFERENCES public.users(id);
+
+
+--
+-- Name: directors fk_director_user; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.directors
+    ADD CONSTRAINT fk_director_user FOREIGN KEY (director_user) REFERENCES public.users(id);
+
+
+--
+-- Name: quarterly_goals fk_goals_activity; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.quarterly_goals
-    ADD CONSTRAINT fk_goal_activity FOREIGN KEY (poa_activity) REFERENCES public.poa_activities(id);
+    ADD CONSTRAINT fk_goals_activity FOREIGN KEY (poa_activity) REFERENCES public.poa_activities(id);
 
 
 --
@@ -904,19 +1090,19 @@ ALTER TABLE ONLY public.area_processes
 
 
 --
--- Name: quarterly_reports fk_qr_period; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: quarterly_reports fk_quarterly_report_period; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.quarterly_reports
-    ADD CONSTRAINT fk_qr_period FOREIGN KEY (period) REFERENCES public.periods(id);
+    ADD CONSTRAINT fk_quarterly_report_period FOREIGN KEY (period) REFERENCES public.periods(id);
 
 
 --
--- Name: quarterly_reports fk_qr_poa; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: quarterly_reports fk_quarterly_report_poa; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.quarterly_reports
-    ADD CONSTRAINT fk_qr_poa FOREIGN KEY (poa) REFERENCES public.annual_programmes(id);
+    ADD CONSTRAINT fk_quarterly_report_poa FOREIGN KEY (poa) REFERENCES public.annual_programmes(id);
 
 
 --
