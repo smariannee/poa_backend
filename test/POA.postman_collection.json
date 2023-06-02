@@ -51,7 +51,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/poa/users/10",
+							"raw": "localhost:3000/poa/users/1",
 							"host": [
 								"localhost"
 							],
@@ -59,7 +59,7 @@
 							"path": [
 								"poa",
 								"users",
-								"10"
+								"1"
 							]
 						}
 					},
@@ -94,7 +94,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Alexx\",\r\n    \"lastname\": \"Herrera\",\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"123\",\r\n    \"status\": true,\r\n    \"role\": \"Director\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Alexx\",\r\n    \"lastname\": \"Herrera\",\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"123\",\r\n    \"phone_number\": 38947974, \r\n    \"extension_number\": 43, \r\n    \"status\": true,\r\n    \"role\": \"Director\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -144,7 +144,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Alexx\",\r\n    \"lastname\": \"Herrera\",\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"123\",\r\n    \"role\": \"Director\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Alexx\",\r\n    \"lastname\": \"Herrera\",\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"123\",\r\n    \"phone_number\": 38947974,\r\n    \"extension_number\": 43,\r\n    \"role\": \"Director\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -438,7 +438,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"area\": \"DATIC\",\r\n    \"director\": 2,\r\n    \"assistant\": 3\r\n}",
+							"raw": "{\r\n    \"title\": \"DATIC\",\r\n    \"abbreviation\": \"Alaaaaaa\",\r\n    \"director\": 2,\r\n    \"assistant\": 3\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -467,7 +467,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"area\": \"DATIC\",\r\n    \"director\": 2,\r\n    \"assistant\": 2\r\n}",
+							"raw": "{\r\n    \"title\": \"DATIC\",\r\n    \"abbreviation\": \"Alaaaaaa\",\r\n    \"director\": 2,\r\n    \"assistant\": 3\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
