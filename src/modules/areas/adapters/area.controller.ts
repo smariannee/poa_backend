@@ -29,8 +29,6 @@ export class AreaController {
 
     static findAreas = async (req: Request, res: Response): Promise<Response> => {
         try {
-
-
             const repo: AreaRepository = new AreaStorageGateway();
             const interact: GetAllAreasInteractor = new GetAllAreasInteractor(repo);
             const areas: Area[] = await interact.execute();
@@ -110,27 +108,26 @@ export class AreaController {
             const id: number = parseInt(req.params.id)
             const payload: UpdateAreaDto = {id, ...req.body} as UpdateAreaDto;
             const repo: AreaRepository = new AreaStorageGateway();
-            const check: ExistAreaByName = new ExistAreaByName(repo);
-            const checkName = check.execute(payload.area);
+            const interact: UpdateAreaInteractor = new UpdateAreaInteractor(repo);
+            const area: Area = await interact.execute(payload);
 
-            if (!await checkName) {
+            let body: ResponseApi<Area> = {
+                code: 200,
+                error: false,
+                message: 'UPDATED',
+                data: area,
+            }
 
-                const interact: UpdateAreaInteractor = new UpdateAreaInteractor(repo);
-                const area: Area = await interact.execute(payload);
-                const body: ResponseApi<Area> = {
-                    code: 200,
-                    error: false,
-                    message: 'UPDATED',
-                    data: area,
-                }
-
-                return res.status(body.code).json(body)
-
-            } else return res.status(400).json({message: 'Email not available ', error: true});
+            if (!area) body = {...this.getError(), message: 'NOT FOUND USER', code: 404, error: false}
+            return res.status(body.code).json(body)
 
 
         } catch (e) {
-            return res.status(500).json({...this.getError(), cause: (<Error>e).message});
+            const error:Error = e as Error
+            if (error.message.includes('duplicate')){
+                console.log('Duplicated name')
+            }
+            return res.status(500).json({...this.getError(), cause: error.message});
         }
     }
 
@@ -150,7 +147,7 @@ export class AreaController {
                 data: area,
             }
 
-            if (!area) body = {...this.getError(), message: 'NOT FOUND USER', code: 404, error: false}
+            if (!area) body = {...this.getError(), message: 'NOT FOUND AREA', code: 404, error: false}
             return res.status(body.code).json(body)
 
 

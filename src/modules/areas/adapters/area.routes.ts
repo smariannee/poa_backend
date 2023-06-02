@@ -15,8 +15,8 @@ const router = Router()
 router.get('/',AreaController.findAreas)
 router.get('/:id' , AreaController.findById)
 router.post('/', AreaController.createArea)
-// router.put('/:id', AreaController.updateUser)
-// router.patch('/:id', AreaController.updateStatusUser)
+router.put('/:id', AreaController.updateArea)
+router.patch('/:id', AreaController.updateStatusArea)
 
 
 

@@ -12,4 +12,5 @@ export interface AreaRepository {
     existByName(name: string): Promise<boolean>;
 
 
+
 }

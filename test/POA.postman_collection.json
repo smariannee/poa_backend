@@ -210,11 +210,315 @@
 		},
 		{
 			"name": "PROCESSES",
-			"item": []
+			"item": [
+				{
+					"name": "get_all",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/poa/process/",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"poa",
+								"process",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_one",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/poa/process/1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"poa",
+								"process",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "insert_one",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"process\": \"Omg\",\r\n    \"process_number\": 2.4\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/poa/process/",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"poa",
+								"process",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updated_one",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"process\": \"Omg\",\r\n    \"process_number\": 2.4\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/poa/process/30",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"poa",
+								"process",
+								"30"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updated_status_one",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/poa/process/30",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"poa",
+								"process",
+								"30"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		},
 		{
 			"name": "AREAS",
-			"item": []
+			"item": [
+				{
+					"name": "get_all",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/poa/areas/",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"poa",
+								"areas",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_one",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/poa/areas/1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"poa",
+								"areas",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "insert_one",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"area\": \"DATIC\",\r\n    \"director\": 2,\r\n    \"assistant\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/poa/areas/",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"poa",
+								"areas",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updated_one",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"area\": \"DATIC\",\r\n    \"director\": 2,\r\n    \"assistant\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/poa/areas/30",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"poa",
+								"areas",
+								"30"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updated_status_one",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/poa/areas/30",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"poa",
+								"areas",
+								"30"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		},
 		{
 			"name": "MEASURES",
