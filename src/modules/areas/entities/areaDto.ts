@@ -1,6 +1,7 @@
 export type GetAreaDto = {
     id?:number,
-    area: string,
+    title: string,
+    abbreviation: string,
     status: boolean,
     director?: {
         name: string,
@@ -19,7 +20,8 @@ export type GetAreaDto = {
 }
 
 export type SaveAreaDto = {
-    area: string,
+    title: string,
+    abbreviation: string,
     director?: number,
     assistant?: number,
 }
@@ -27,7 +29,8 @@ export type SaveAreaDto = {
 
 export type UpdateAreaDto = {
     id?: number,
-    area: string,
+    title: string,
+    abbreviation: string,
     director: number,
     assistant: number,
 }

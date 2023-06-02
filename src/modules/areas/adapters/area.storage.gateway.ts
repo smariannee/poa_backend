@@ -5,9 +5,20 @@ import {SaveAreaDto, UpdateAreaDto, UpdateStatusAreaDto} from "../entities/areaD
 import {QueryResult} from "pg";
 
 function mappingArea(row: any) {
+
+    if (!row.director_id || !row.assistant_id ){
+      return {
+          id: row.id,
+          title: row.area_title,
+          abbreviation: row.area_abbreviation,
+          status: row.status
+      } as Area
+    } //test
+
     return ({
-        id: row.area_id,
-        area: row.area,
+        id: row.id,
+        title: row.area_title,
+        abbreviation: row.area_abbreviation,
         status: row.status,
         director: {
             id: row.director_id,
@@ -34,11 +45,11 @@ export class AreaStorageGateway implements AreaRepository {
 
     async create(areaO: SaveAreaDto): Promise<Area> {
         try {
-            const {area, director, assistant} = areaO;
+            const {title,abbreviation, director, assistant} = areaO;
 
             const response = await pool.query(
-                'INSERT INTO areas (area, director, assistant) values ($1, $2, $3) RETURNING *',
-                [area, director, assistant]
+                'INSERT INTO areas (title,abbreviation, director, assistant) values ($1, $2, $3 , $4) RETURNING *',
+                [title,abbreviation, director, assistant]
             );
             return response.rows[0] as Area;
         } catch (error) {
@@ -49,7 +60,7 @@ export class AreaStorageGateway implements AreaRepository {
     async existByName(name: string): Promise<boolean> {
         try {
             const response: QueryResult = await pool.query(
-                'SELECT count(\'area\') FROM areas WHERE area = $1;',
+                'SELECT count(\'area\') FROM areas WHERE abbreviation = $1;',
                 [name]
             );
             return response.rows[0].count > 0;
@@ -80,11 +91,11 @@ export class AreaStorageGateway implements AreaRepository {
 
     async update(areaO: UpdateAreaDto): Promise<Area> {
         try {
-            const {id, area, director, assistant} = areaO;
+            const {id, title,abbreviation, director, assistant} = areaO;
 
             const response = await pool.query(
-                'UPDATE areas SET area= $1, director  = $2, assistant = $3 WHERE id = $4 RETURNING *',
-                [area, director, assistant, id]
+                'UPDATE areas SET title =$1 ,abbreviation= $2, director  = $3, assistant = $4 WHERE id = $5 RETURNING *',
+                [title,abbreviation , director, assistant, id]
             );
             return response.rows[0] as Area;
         } catch (error) {

@@ -96,7 +96,7 @@ ALTER TYPE public.status_delivery OWNER TO postgres;
 
 CREATE TYPE public.status_time AS ENUM (
     'On time',
-    'Late',
+    'Reprogram',
     'Early'
 );
 
@@ -188,7 +188,8 @@ ALTER SEQUENCE public.area_processes_id_seq OWNED BY public.area_processes.id;
 
 CREATE TABLE public.areas (
     id integer NOT NULL,
-    area character varying(50) NOT NULL,
+    title character varying(50) NOT NULL,
+    abbreviation character varying(20) NOT NULL,
     status boolean DEFAULT true NOT NULL,
     director integer,
     assistant integer
@@ -230,6 +231,7 @@ CREATE TABLE public.users (
     email character varying(50) NOT NULL,
     password text NOT NULL,
     phone_number character varying NOT NULL,
+    extension_number character varying NOT NULL,
     status boolean DEFAULT true NOT NULL,
     role public.roles NOT NULL
 );
@@ -243,7 +245,8 @@ ALTER TABLE public.users OWNER TO postgres;
 
 CREATE VIEW public.areas_users AS
  SELECT a.id AS area_id,
-    a.area AS area_name,
+    a.title AS area_title,
+    a.abbreviation AS area_abbreviation,
     u.id AS assistant_id,
     u.name AS assistant_name,
     u.lastname AS assistant_lastname,
@@ -255,8 +258,8 @@ CREATE VIEW public.areas_users AS
     u2.email AS director_email,
     u2.role AS director_role
    FROM ((public.areas a
-     JOIN public.users u ON ((u.id = a.assistant)))
-     JOIN public.users u2 ON ((u2.id = a.director)));
+     LEFT JOIN public.users u ON ((u.id = a.assistant)))
+     LEFT JOIN public.users u2 ON ((u2.id = a.director)));
 
 
 ALTER TABLE public.areas_users OWNER TO postgres;
@@ -302,7 +305,7 @@ ALTER SEQUENCE public.indicator_numbers_id_seq OWNED BY public.indicator_numbers
 
 CREATE TABLE public.measure_units (
     id integer NOT NULL,
-    measure_unit character varying NOT NULL,
+    title character varying NOT NULL,
     status boolean DEFAULT true NOT NULL
 );
 
@@ -337,7 +340,7 @@ ALTER SEQUENCE public.measure_units_id_seq OWNED BY public.measure_units.id;
 
 CREATE TABLE public.periods (
     id integer NOT NULL,
-    period character varying NOT NULL,
+    title character varying NOT NULL,
     requested_date date NOT NULL,
     due_date date NOT NULL,
     adjourned_date date
@@ -374,7 +377,7 @@ ALTER SEQUENCE public.periods_id_seq OWNED BY public.periods.id;
 
 CREATE TABLE public.processes (
     id integer NOT NULL,
-    process character varying NOT NULL,
+    tittle character varying NOT NULL,
     process_number integer NOT NULL,
     sheet_number integer,
     status boolean DEFAULT true NOT NULL
@@ -548,9 +551,16 @@ COPY public.area_processes (id, area, process) FROM stdin;
 -- Data for Name: areas; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.areas (id, area, status, director, assistant) FROM stdin;
-30	DATID	f	3	2
-1	DATIC	t	3	2
+COPY public.areas (id, title, abbreviation, status, director, assistant) FROM stdin;
+2	División Academica1	DATID	t	\N	\N
+3	División Academica2	DAMI	t	\N	\N
+4	División Academica3	DACEA	t	\N	\N
+5	División Academica4	DATEFI	t	\N	\N
+6	División Academica5	DAF	t	\N	\N
+7	Dirección de Planeación y Servicios Escolares	DPSE	t	\N	\N
+8	ABOGADO GENERAL	ABOGADO GENERAL	t	\N	\N
+1	Secretaría Academica	SRIA. ACADEMICA	t	\N	\N
+11	DATICq	Alaaaaaa	f	2	3
 \.
 
 
@@ -566,7 +576,7 @@ COPY public.indicator_numbers (id, indicator_number, status) FROM stdin;
 -- Data for Name: measure_units; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.measure_units (id, measure_unit, status) FROM stdin;
+COPY public.measure_units (id, title, status) FROM stdin;
 \.
 
 
@@ -574,7 +584,7 @@ COPY public.measure_units (id, measure_unit, status) FROM stdin;
 -- Data for Name: periods; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.periods (id, period, requested_date, due_date, adjourned_date) FROM stdin;
+COPY public.periods (id, title, requested_date, due_date, adjourned_date) FROM stdin;
 \.
 
 
@@ -582,7 +592,7 @@ COPY public.periods (id, period, requested_date, due_date, adjourned_date) FROM 
 -- Data for Name: processes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.processes (id, process, process_number, sheet_number, status) FROM stdin;
+COPY public.processes (id, tittle, process_number, sheet_number, status) FROM stdin;
 \.
 
 
@@ -598,10 +608,11 @@ COPY public.quarterly_reports (id, status, date, pdf_document, period, poa) FROM
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.users (id, name, lastname, email, password, phone_number, status, role) FROM stdin;
-1	Joel	Herrera	joel@utez.edu.mx	123456	7774138126	t	Assistant
-2	Mario	Perez	mario@utez.edu.mx	123456	6776862478	t	Director
-3	Carlos	Martinez	carlos@utez.edu.mx	123456	9079766678	t	Assistant
+COPY public.users (id, name, lastname, email, password, phone_number, extension_number, status, role) FROM stdin;
+1	Joel	Herrera	joel@utez.edu.mx	123456	7774138126	55	t	Assistant
+2	Mario	Perez	mario@utez.edu.mx	123456	6776862478	47	t	Director
+3	Carlos	Martinez	carlos@utez.edu.mx	123456	9079766678	24	t	Assistant
+4	Alexx	Herrera	bjo@utez.edu.mx	123	38947974	43	t	Director
 \.
 
 
@@ -623,7 +634,7 @@ SELECT pg_catalog.setval('public.area_processes_id_seq', 1, false);
 -- Name: areas_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.areas_id_seq', 30, true);
+SELECT pg_catalog.setval('public.areas_id_seq', 11, true);
 
 
 --
@@ -665,7 +676,7 @@ SELECT pg_catalog.setval('public.quarterly_reports_id_seq', 1, false);
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 3, true);
+SELECT pg_catalog.setval('public.users_id_seq', 4, true);
 
 
 --
@@ -685,11 +696,11 @@ ALTER TABLE ONLY public.area_processes
 
 
 --
--- Name: areas areas_area_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: areas areas_abbreviation_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.areas
-    ADD CONSTRAINT areas_area_key UNIQUE (area);
+    ADD CONSTRAINT areas_abbreviation_key UNIQUE (abbreviation);
 
 
 --
@@ -701,6 +712,14 @@ ALTER TABLE ONLY public.areas
 
 
 --
+-- Name: areas areas_title_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.areas
+    ADD CONSTRAINT areas_title_key UNIQUE (title);
+
+
+--
 -- Name: indicator_numbers indicator_numbers_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -709,19 +728,19 @@ ALTER TABLE ONLY public.indicator_numbers
 
 
 --
--- Name: measure_units measure_units_measure_unit_key; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.measure_units
-    ADD CONSTRAINT measure_units_measure_unit_key UNIQUE (measure_unit);
-
-
---
 -- Name: measure_units measure_units_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.measure_units
     ADD CONSTRAINT measure_units_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: measure_units measure_units_title_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.measure_units
+    ADD CONSTRAINT measure_units_title_key UNIQUE (title);
 
 
 --
@@ -741,11 +760,11 @@ ALTER TABLE ONLY public.processes
 
 
 --
--- Name: processes processes_process_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: processes processes_tittle_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.processes
-    ADD CONSTRAINT processes_process_key UNIQUE (process);
+    ADD CONSTRAINT processes_tittle_key UNIQUE (tittle);
 
 
 --

@@ -9,11 +9,11 @@ export class UserStorageGateway implements UserRepository {
 
     async create(user: SaveUserDto): Promise<User> {
         try {
-            const {name, lastname, email, password, role} = user;
+            const {name, lastname, email,phone_number, extension_number,  password, role} = user;
 
             const response = await pool.query(
-                'INSERT INTO users (name, lastname, email, password, role) values ($1, $2, $3, $4, $5) RETURNING *',
-                [name, lastname, email, password, role]
+                'INSERT INTO users (name, lastname, email, phone_number, extension_number, password, role) values ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
+                [name, lastname, email, phone_number, extension_number , password, role]
             );
             return response.rows[0] as User;
         } catch (error) {
@@ -24,7 +24,7 @@ export class UserStorageGateway implements UserRepository {
     async findById(id: number): Promise<User> {
         try {
             const response = await pool.query(
-                'SELECT id,name,lastname,email,status,role FROM users WHERE id = $1',
+                'SELECT id,name,lastname,email, phone_number, extension_number ,status,role FROM users WHERE id = $1',
                 [id]
             );
             return response.rows[0] as User;
@@ -35,7 +35,7 @@ export class UserStorageGateway implements UserRepository {
 
     async findAll(): Promise<User[]> {
         try {
-            const response = await pool.query('SELECT id,name,lastname,email,status,role FROM users');
+            const response = await pool.query('SELECT id,name,lastname,email,phone_number, extension_number,status,role FROM users');
             return response.rows;
         } catch (error) {
             throw new Error('Error database' + error);
@@ -44,11 +44,11 @@ export class UserStorageGateway implements UserRepository {
 
     async update(user: UpdateUserDto): Promise<User> {
         try {
-            const {id, name, lastname, email, password, role} = user;
+            const {id, name, lastname, email, phone_number, extension_number,password, role} = user;
 
             const response = await pool.query(
-                'UPDATE users SET name = $1, lastname= $2, email=$3, password=$4, role=$5 WHERE id = $6 RETURNING *',
-                [name, lastname, email, password, role, id]
+                'UPDATE users SET name = $1, lastname= $2, email=$3,phone_number =$4 , extension_number =$5 , password=$6, role=$7 WHERE id = $8 RETURNING *',
+                [name, lastname, email, phone_number, extension_number, password, role, id]
             );
             return response.rows[0] as User;
         } catch (error) {

@@ -5,6 +5,8 @@ export type User = Entity<number> & {
     lastname: string,
     email: string,
     password:string,
+    phone_number: string,
+    extension_number: string,
     status: boolean,
     role: Role
 }
