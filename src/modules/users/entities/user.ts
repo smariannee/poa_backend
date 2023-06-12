@@ -1,17 +1,17 @@
-import {Entity} from "../../../kernel/types";
+import { Entity } from "../../../kernel/types"
+import { Role } from "./role"
 
 export type User = Entity<number> & {
     name: string,
-    lastname: string,
+    lastname1: string,
+    lastname2: string,
     email: string,
-    password:string,
+    password: string,
     phone_number: string,
     extension_number: string,
     status: boolean,
-    role: Role
-}
-
-export enum Role {
-    Administrator = 'Administrator',Director= 'Director',Assistant = 'Assistant'
+    availability: boolean,
+    role: Role,
+    reset_token: string
 }
 
