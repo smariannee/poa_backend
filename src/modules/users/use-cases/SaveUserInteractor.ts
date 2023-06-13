@@ -8,7 +8,7 @@ import { UserRepository } from "./ports/user.repository"
 export class SaveUserInteractor implements UseCase<SaveUserDto, User> {
     constructor(private readonly userRepository: UserRepository) {}
     async execute(payload: SaveUserDto): Promise<User> {
-        if (!payload) throw Error('Missing fields')
+        if (!payload.name || !payload.lastname1 || !payload.lastname2 || !payload.email || !payload.password || !payload.role) throw Error('Missing fields')
         if (!validateEmail(payload.email)) throw Error('Invalid email')
         if (!validatePassword(payload.password)) throw Error('Invalid password')
         if (payload.phone_number && !validatePhoneNumber(payload.phone_number)) throw Error('Invalid phone number')

@@ -14,4 +14,3 @@ export type User = Entity<number> & {
     role: Role,
     reset_token: string
 }
-

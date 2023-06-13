@@ -12,8 +12,8 @@ export class UserController {
     static findUsers = async (req: Request, res: Response): Promise<Response> => {
         try {
             const repository: UserRepository = new UserStorageGateway();
-            const interact: GetAllUsersInteractor = new GetAllUsersInteractor(repository);
-            const users: User[] = await interact.execute();
+            const interactor: GetAllUsersInteractor = new GetAllUsersInteractor(repository);
+            const users: User[] = await interactor.execute();
             let body: ResponseApi<User[]> = {
                 code: 200,
                 error: false,
@@ -22,17 +22,17 @@ export class UserController {
             }
             return res.status(body.code).json(body)
         } catch (e) {
-            return res.status(500).json(validateError(e as Error))
+            const error = validateError(e as Error)
+            return res.status(error.code).json(error)
         }
-
     }
 
     static findUserById = async (req: Request, res: Response): Promise<Response> => {
         try {
             const id: number = parseInt(req.params.id)
             const repository: UserRepository = new UserStorageGateway();
-            const interact: GetUserInteractor = new GetUserInteractor(repository);
-            const user: User = await interact.execute(id);
+            const interactor: GetUserInteractor = new GetUserInteractor(repository);
+            const user: User = await interactor.execute(id);
             let body: ResponseApi<User> = {
                 code: 200,
                 error: false,
@@ -41,17 +41,17 @@ export class UserController {
             }
             return res.status(body.code).json(body)
         } catch (e) {
-            throw Error('Server Error' + e);
+            const error = validateError(e as Error)
+            return res.status(error.code).json(error)
         }
-
     }
 
     static saveUser = async (req: Request, res: Response): Promise<Response> => {
         try {
             const payload: SaveUserDto = {...req.body} as SaveUserDto
             const repository: UserRepository = new UserStorageGateway()
-            const interact: SaveUserInteractor = new SaveUserInteractor(repository)
-            const user: User = await interact.execute(payload)
+            const interactor: SaveUserInteractor = new SaveUserInteractor(repository)
+            const user: User = await interactor.execute(payload)
             const body: ResponseApi<User> = {
                 code: 201,
                 error: false,
@@ -70,8 +70,8 @@ export class UserController {
             const id: number = parseInt(req.params.id)
             const payload: UpdateUserDto = {id, ...req.body} as UpdateUserDto;
             const repository: UserRepository = new UserStorageGateway();
-            const interact: UpdateUserInteractor = new UpdateUserInteractor(repository);
-            const user: User = await interact.execute(payload);
+            const interactor: UpdateUserInteractor = new UpdateUserInteractor(repository);
+            const user: User = await interactor.execute(payload);
             const body: ResponseApi<User> = {
                 code: 200,
                 error: false,
@@ -80,27 +80,28 @@ export class UserController {
             }
             return res.status(body.code).json(body)
         } catch (e) {
-            throw Error('Server Error' + e);
+            const error = validateError(e as Error)
+            return res.status(error.code).json(error)
         }
     }
 
     static updateStatusUser = async (req: Request, res: Response): Promise<Response> => {
         try {
-
             const id: number = parseInt(req.params.id)
             const payload: UpdateStatusUserDto = {id,...req.body} as UpdateStatusUserDto;
             const repository: UserRepository = new UserStorageGateway();
-            const interact: UpdateStatusUserInteractor = new UpdateStatusUserInteractor(repository);
-            const user: User = await interact.execute(payload);
+            const interactor: UpdateStatusUserInteractor = new UpdateStatusUserInteractor(repository);
+            const user: User = await interactor.execute(payload);
             let body: ResponseApi<User> = {
-                code: 201,
+                code: 200,
                 error: false,
                 message: 'Updated',
                 data: user,
             }
             return res.status(body.code).json(body)
         } catch (e) {
-            throw Error('Server Error' + e);
+            const error = validateError(e as Error)
+            return res.status(error.code).json(error)
         }
     }
 
