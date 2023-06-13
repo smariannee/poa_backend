@@ -7,8 +7,8 @@ export class UpdateStatusUserInteractor implements UseCase<UpdateStatusUserDto, 
     constructor(private readonly userRepository: UserRepository) {}
     async execute(payload: UpdateStatusUserDto): Promise<User> {
         if (!payload.id) throw Error('Missing id')
-        if (payload.status === undefined) throw Error('Missing fields')
         if (isNaN(payload.id)) throw Error('Invalid id')
+        if (payload.status === undefined) throw Error('Missing fields')
         if (await this.userRepository.existsById(payload.id)) {
             const user = await this.userRepository.findById(payload.id)
             if (!payload.status && !user.availability) throw Error('User occupied')
