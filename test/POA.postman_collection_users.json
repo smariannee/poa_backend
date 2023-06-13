@@ -47,7 +47,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/poa/users/1",
+							"raw": "http://localhost:3000/poa/users/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -56,7 +56,7 @@
 							"path": [
 								"poa",
 								"users",
-								"1"
+								"2"
 							]
 						}
 					},
@@ -69,7 +69,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Olivia\",\r\n    \"lastname1\": \"Aguario\",\r\n    \"lastname2\": \"Santos\",\r\n    \"email\": \"oliviaaguario@utez.edu.mx\",\r\n    \"password\": \"Oa123456.\",\r\n    \"phone_number\": \"7771316936\",\r\n    \"extension_number\": \"123\",\r\n    \"role\": \"Director\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Martha Fabiola\",\r\n    \"lastname1\": \"Wences\",\r\n    \"lastname2\": \"Díaz\",\r\n    \"email\": \"fabiolawences@utez.edu.mx\",\r\n    \"phone_number\": \"7771316936\",\r\n    \"extension_number\": \"123\",\r\n    \"role\": \"Director\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -99,7 +99,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Miguel\",\r\n    \"lastname1\": \"Aguario\",\r\n    \"lastname2\": \"Diaz\",\r\n    \"email\": \"miguelaguario@utez.edu.mx\",\r\n    \"phone_number\": \"7771316936\",\r\n    \"extension_number\": \"123\",\r\n    \"role\": \"Director\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Emmanuel\",\r\n    \"lastname1\": \"Narváez\",\r\n    \"lastname2\": \"Bahena\",\r\n    \"email\": \"emmanuelnarvaez@utez.edu.mx\",\r\n    \"phone_number\": \"7771234567\",\r\n    \"extension_number\": \"123\",\r\n    \"role\": \"Administrador\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -107,7 +107,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/poa/users/7",
+							"raw": "http://localhost:3000/poa/users/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -116,7 +116,7 @@
 							"path": [
 								"poa",
 								"users",
-								"7"
+								"1"
 							]
 						}
 					},
@@ -137,7 +137,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/poa/users/7",
+							"raw": "http://localhost:3000/poa/users/status/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -146,7 +146,39 @@
 							"path": [
 								"poa",
 								"users",
-								"7"
+								"status",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-password-user",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"old_password\": \"ola\",\r\n    \"new_password\": \"Mwd1234.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/poa/users/password/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"poa",
+								"users",
+								"password",
+								"2"
 							]
 						}
 					},
