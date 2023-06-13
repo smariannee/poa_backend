@@ -2,9 +2,9 @@
  * @interface AuthStorageGateway
  * @description request to the database
  */
-import {AuthRepository} from "@/modules/auth/use-cases/ports/auth.repository";
+import {AuthRepository} from "../use-cases/ports/auth.repository";
 import {LoginUserDto, ResetPwdUserDto} from "@/modules/auth/entities";
-import {User} from "@/modules/auth/boundary";
+import {User} from "../boundary";
 import {pool} from "../../../utils/dbconfig";
 
 export class AuthStorageGateway implements AuthRepository {

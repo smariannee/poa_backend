@@ -1,6 +1,7 @@
 import { Role } from "../../entities/role"
 
 export type GetUserDto = {
+    id: number,
     name: string,
     lastname1: string,
     lastname2: string,

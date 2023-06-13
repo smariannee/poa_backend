@@ -9,12 +9,14 @@ import processRoutes from './modules/process/adapters/process.routes';
 dotenv.config();
 
 const PORT = process.env.PORT || 3000;
+const HOST = process.env.HOST || 'localhost';
+
 const app: Application = express();
 const API:string = 'poa';
 
 app.use(cors({
     credentials:true,
-    origin: 'http://localhost:3000'
+    origin: `http://${PORT}:${HOST}`
 }))
 
 app.use(express.json({limit: '50mb'}));
