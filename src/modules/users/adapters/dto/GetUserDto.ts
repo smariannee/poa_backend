@@ -10,4 +10,5 @@ export type GetUserDto = {
     status: boolean,
     availability: boolean,
     role: Role,
+    password?: string,
 }

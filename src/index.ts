@@ -2,6 +2,7 @@ import * as dotenv from 'dotenv';
 import express, {Application, Request, Response} from 'express';
 import cors from 'cors';
 import userRoutes from './modules/users/adapters/user.routes';
+import authRoutes from './modules/auth/adapters/auth.routes';
 import areaRoutes from './modules/areas/adapters/area.routes';
 import processRoutes from './modules/process/adapters/process.routes';
 
@@ -22,6 +23,7 @@ app.use(express.urlencoded({extended: false}))
 app.get('/test', (req:Request, res:Response) => res.send('Welcome to POA (Annual Operational Program)'))
 
 
+app.use(`/${API}/auth`,authRoutes);
 app.use(`/${API}/users`,userRoutes);
 app.use(`/${API}/areas`,areaRoutes);
 app.use(`/${API}/process`,processRoutes);

@@ -1,4 +1,4 @@
-import { UseCase } from "../../../kernel/contracts";
+import { UseCase } from "@/kernel/contracts";
 import { UpdateUserDto } from "../adapters/dto";
 import { Role } from "../entities/role";
 import { User } from "../entities/user";

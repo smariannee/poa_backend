@@ -1,4 +1,4 @@
-import { UseCase } from "../../../kernel/contracts"
+import { UseCase } from "@/kernel/contracts"
 import { encodeString } from "../../../kernel/jwt"
 import { createPassword } from "../../../utils/functions"
 import { validateEmail, validateExtensionNumber, validatePassword, validatePhoneNumber } from "../../../utils/validations"

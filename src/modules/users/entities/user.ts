@@ -1,4 +1,4 @@
-import { Entity } from "../../../kernel/types"
+import { Entity } from "@/kernel/types"
 import { Role } from "./role"
 
 export type User = Entity<number> & {
