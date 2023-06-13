@@ -16,3 +16,8 @@ export type ResponseEmail = {
 
     url?: string
 }
+
+export type ResponseEmailNewUser = {
+    email: string,
+    password: string
+}
