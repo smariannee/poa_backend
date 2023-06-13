@@ -15,6 +15,8 @@ const errors: {[x: string]: ResponseApi<undefined>} = {
     'Incorrect credentials': { code: 400, error: true, message: 'Incorrect credentials check your data' },
     'Invalid Token': { code: 400, error: true, message: 'Unauthorized' },
     'Expired Token': { code: 400, error: true, message: 'Unauthorized' },
+    'Error saving': { code: 500, error: true, message: 'Error saving' },
+    'Error sending email': { code: 500, error: true, message: 'Error sending email' },
     'Server Error': { code: 500, error: true, message: 'Internal Server Error' },
 };
 
