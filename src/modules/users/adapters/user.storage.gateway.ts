@@ -1,4 +1,5 @@
 import { pool } from "../../../utils/dbconfig";
+import { createPassword } from "../../../utils/functions";
 import { User } from "../entities/user";
 import { UserRepository } from "../use-cases/ports/user.repository";
 import { SaveUserDto, UpdateStatusUserDto, UpdateUserDto } from "./dto";
@@ -60,7 +61,7 @@ export class UserStorageGateway implements UserRepository {
 
     async existsById(id: number): Promise<boolean> {
         try {
-            const response = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
+            const response = await pool.query('select * from users where id = $1', [id]);
             return response.rows.length > 0;
         } catch (e) {
             console.error(e);
@@ -70,7 +71,7 @@ export class UserStorageGateway implements UserRepository {
 
     async existsByEmail(email: string): Promise<boolean> {
         try {
-            const response = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+            const response = await pool.query('select * from users where email = $1', [email]);
             return response.rows.length > 0;
         } catch (e) {
             console.error(e);

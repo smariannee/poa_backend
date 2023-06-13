@@ -9,6 +9,7 @@ const errors: {[x: string]: ResponseApi<undefined>} = {
     'Invalid extension number': { code: 400, error: true, message: 'Invalid extension number' },
     'Invalid role': { code: 400, error: true, message: 'Invalid role' },
     'Already exists': { code: 400, error: true, message: 'Already exists' },
+    'User occupied': { code: 400, error: true, message: 'User occupied' },
     'Not found': { code: 404, error: true, message: 'Not found' },
     'Bad Request': { code: 400, error: true, message: 'Bad Request' },
     'Incorrect credentials': { code: 400, error: true, message: 'Incorrect credentials check your data' },
