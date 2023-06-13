@@ -3,7 +3,7 @@
  * @description request to the database
  */
 import {AuthRepository} from "@/modules/auth/use-cases/ports/auth.repository";
-import {LoginUserDto, RecoverPwdUserDto} from "@/modules/auth/entities";
+import {LoginUserDto, ResetPwdUserDto} from "@/modules/auth/entities";
 import {User} from "@/modules/auth/boundary";
 import {pool} from "../../../utils/dbconfig";
 
@@ -21,15 +21,23 @@ export class AuthStorageGateway implements AuthRepository {
     }
 
 
-    insertResetToken(user: RecoverPwdUserDto): Promise<boolean> {
+    async generateResetToken(user: ResetPwdUserDto): Promise<boolean> {
+        try {
+            const {id, token} = user;
+            const response = await pool.query(
+                'UPDATE users SET "reset_token" = $1 WHERE id = $2',[token, id]
+            );
+            return response.rows[0] > 0;
+        } catch (error) {
+            throw Error('Server Error');
+        }
+    }
+
+    findByResetToken(token: string): Promise<number> {
         throw new Error('Not Implemented yet')
     }
 
-    findByTokenReset(token: string): Promise<number> {
-        throw new Error('Not Implemented yet')
-    }
-
-    recoverPassword(user: RecoverPwdUserDto): Promise<User> {
+    resetPassword(user: ResetPwdUserDto): Promise<User> {
         throw new Error('Not Implemented yet')
     }
 

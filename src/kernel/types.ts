@@ -10,3 +10,9 @@ export type ResponseApi<T> = {
     count?: number
     token?: string
 }
+
+export type ResponseEmail = {
+    email: string
+
+    url?: string
+}

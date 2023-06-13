@@ -1,2 +1,2 @@
-export * from './recoverPwdUserDto';
+export * from './resetPwdUserDto';
 export * from './loginUserDto';
