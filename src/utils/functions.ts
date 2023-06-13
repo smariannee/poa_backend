@@ -1,5 +1,5 @@
 import {transporter} from "../utils/emailconfig";
-import {ResponseEmail} from "@/kernel/types";
+import {ResponseEmail, ResponseEmailNewUser} from "@/kernel/types";
 import {templateResetPwd} from "../utils/templateEmail/templateResetPwd";
 import { templateNewUser } from "./templateEmail/templateNewUser";
 
