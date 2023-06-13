@@ -8,7 +8,7 @@ const PORT : string = process.env.PORTDB || '5432'
 /**
  * @description Create Connection
  */
-//
+
 export const pool = new Pool({
     user: process.env.USER,
     password: process.env.PASSWORD,
@@ -18,4 +18,3 @@ export const pool = new Pool({
 
 })
 
-// timezone: 'utc',

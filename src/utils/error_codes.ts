@@ -1,4 +1,4 @@
-import { ResponseApi } from "../kernel/types";
+import { ResponseApi } from "@/kernel/types";
 
 const errors: {[x: string]: ResponseApi<undefined>} = {
     'Missing fields': { code: 400, error: true, message: 'Missing fields' },
@@ -11,6 +11,7 @@ const errors: {[x: string]: ResponseApi<undefined>} = {
     'Already exists': { code: 400, error: true, message: 'Already exists' },
     'Not found': { code: 404, error: true, message: 'Not found' },
     'Bad Request': { code: 400, error: true, message: 'Bad Request' },
+    'Incorrect credentials': { code: 400, error: true, message: 'Incorrect credentials check your data' },
     'Server Error': { code: 500, error: true, message: 'Internal Server Error' },
 };
 

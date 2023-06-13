@@ -7,6 +7,94 @@
 	},
 	"item": [
 		{
+			"name": "AUTH",
+			"item": [
+				{
+					"name": "Exceptions",
+					"item": [
+						{
+							"name": "400-Missing Filds",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/poa/auth/login",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"poa",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "400-Data Incorrect",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"mariaherrera@utez.edu.mx\",\r\n    \"password\": \"jebe\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/poa/auth/login",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"poa",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "login_startSession",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"mariaherrera@utez.edu.mx\",\r\n    \"password\": \"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/poa/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"poa",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "USERS",
 			"item": [
 				{
@@ -14,7 +102,7 @@
 					"item": []
 				},
 				{
-					"name": "get_all",
+					"name": "get-users",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -31,7 +119,8 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/poa/users/",
+							"raw": "http://localhost:3000/poa/users/",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
@@ -46,12 +135,13 @@
 					"response": []
 				},
 				{
-					"name": "get_one",
+					"name": "get-user",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/poa/users/1",
+							"raw": "http://localhost:3000/poa/users/1",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
@@ -66,35 +156,13 @@
 					"response": []
 				},
 				{
-					"name": "insert_one",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"const generateRandomString = (length) => {\r",
-									"    let result = '';\r",
-									"    const characters = 'abcdefghijklmnopqrstuvwxyz';\r",
-									"    for (let i = 0; i < length; i++) {\r",
-									"        result += characters.charAt(Math.floor(Math.random() * \r",
-									"        characters.length));\r",
-									"    }\r",
-									"    return result + \"@utez.edu.mx\";\r",
-									"}\r",
-									"\r",
-									"pm.variables.set(\"email\", generateRandomString(3));\r",
-									"console.log(pm.variables.get('email'))"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
+					"name": "save-user",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Alexx\",\r\n    \"lastname\": \"Herrera\",\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"123\",\r\n    \"phone_number\": 38947974, \r\n    \"extension_number\": 43, \r\n    \"status\": true,\r\n    \"role\": \"Director\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Olivia\",\r\n    \"lastname1\": \"Aguario\",\r\n    \"lastname2\": \"Santos\",\r\n    \"email\": \"oliviaaguario@utez.edu.mx\",\r\n    \"password\": \"Oa123456.\",\r\n    \"phone_number\": \"7771316936\",\r\n    \"extension_number\": \"123\",\r\n    \"role\": \"Director\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -102,49 +170,29 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/poa/users",
+							"raw": "http://localhost:3000/poa/users/",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
 								"poa",
-								"users"
+								"users",
+								""
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "update_one",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"const generateRandomString = (length) => {\r",
-									"    let result = '';\r",
-									"    const characters = 'abcdefghijklmnopqrstuvwxyz';\r",
-									"    for (let i = 0; i < length; i++) {\r",
-									"        result += characters.charAt(Math.floor(Math.random() * \r",
-									"        characters.length));\r",
-									"    }\r",
-									"    return result + \"@utez.edu.mx\";\r",
-									"}\r",
-									"\r",
-									"pm.variables.set(\"email\", generateRandomString(3));\r",
-									"console.log(pm.variables.get('email'))"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
+					"name": "update-user",
 					"request": {
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Alexx\",\r\n    \"lastname\": \"Herrera\",\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"123\",\r\n    \"phone_number\": 38947974,\r\n    \"extension_number\": 43,\r\n    \"role\": \"Director\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Miguel\",\r\n    \"lastname1\": \"Aguario\",\r\n    \"lastname2\": \"Diaz\",\r\n    \"email\": \"miguelaguario@utez.edu.mx\",\r\n    \"phone_number\": \"7771316936\",\r\n    \"extension_number\": \"123\",\r\n    \"role\": \"Director\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -152,7 +200,8 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/poa/users/10",
+							"raw": "http://localhost:3000/poa/users/7",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
@@ -160,31 +209,20 @@
 							"path": [
 								"poa",
 								"users",
-								"10"
+								"7"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "status_update_one",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
+					"name": "update-status-user Copy",
 					"request": {
 						"method": "PATCH",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"status\": true\r\n}",
+							"raw": "{\r\n    \"status\": false\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -192,7 +230,8 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/poa/users/10",
+							"raw": "http://localhost:3000/poa/users/7",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
@@ -200,7 +239,7 @@
 							"path": [
 								"poa",
 								"users",
-								"10"
+								"7"
 							]
 						}
 					},
