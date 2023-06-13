@@ -4,7 +4,7 @@ export const validateEmail = (email: string): boolean => {
 }
 
 export const validatePassword = (password: string): boolean => {
-    const pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
+    const pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!"#$%&/()=?'¡¿*-.]).{8,}$/;
     return pattern.test(password);
 }
 

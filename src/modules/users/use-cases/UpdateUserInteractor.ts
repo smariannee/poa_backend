@@ -3,7 +3,7 @@ import { UpdateUserDto } from "../adapters/dto";
 import { Role } from "../entities/role";
 import { User } from "../entities/user";
 import { UserRepository } from "./ports/user.repository";
-import { validateEmail, validateExtensionNumber, validatePassword, validatePhoneNumber } from "../../../utils/validations"
+import { validateEmail, validateExtensionNumber, validatePhoneNumber } from "../../../utils/validations"
 
 export class UpdateUserInteractor implements UseCase<UpdateUserDto, User> {
     constructor(private readonly userRepository: UserRepository) {}
@@ -13,8 +13,14 @@ export class UpdateUserInteractor implements UseCase<UpdateUserDto, User> {
         if (!validateEmail(payload.email)) throw Error('Invalid email')
         if (payload.phone_number && !validatePhoneNumber(payload.phone_number)) throw Error('Invalid phone number')
         if (payload.extension_number && !validateExtensionNumber(payload.extension_number)) throw Error('Invalid extension number')
-        if (!Object.values(Role).includes(payload.role)) throw Error('Invalid role')
-        if (!await this.userRepository.existsById(payload.id)) throw Error('Not found')
+        if (await this.userRepository.existsById(payload.id)) {
+            const user = await this.userRepository.findById(payload.id)
+            if (user.role != payload.role) {
+                if (!user.availability) throw Error('User occupied')
+            }
+        } else {
+            throw Error('Not found')
+        }
         return this.userRepository.update(payload)
     }
 }

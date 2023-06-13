@@ -1,4 +1,5 @@
 import { pool } from "../../../utils/dbconfig";
+import { createPassword } from "../../../utils/functions";
 import { User } from "../entities/user";
 import { UserRepository } from "../use-cases/ports/user.repository";
 import { SaveUserDto, UpdateStatusUserDto, UpdateUserDto } from "./dto";
@@ -27,7 +28,8 @@ export class UserStorageGateway implements UserRepository {
 
     async save(user: SaveUserDto): Promise<User> {
         try {
-            const { name, lastname1, lastname2, email, password, phone_number, extension_number, role } = user;
+            const { name, lastname1, lastname2, email, phone_number, extension_number, role } = user;
+            const password = createPassword(name, lastname1, lastname2);
             const response = await pool.query('insert into users(name, lastname1, lastname2, email, password, phone_number, extension_number, role) values($1, $2, $3, $4, $5, $6, $7, $8) returning *', [name, lastname1, lastname2, email, password, phone_number, extension_number, role]);
             return response.rows[0] as User;
         } catch (e) {
@@ -60,7 +62,7 @@ export class UserStorageGateway implements UserRepository {
 
     async existsById(id: number): Promise<boolean> {
         try {
-            const response = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
+            const response = await pool.query('select * from users where id = $1', [id]);
             return response.rows.length > 0;
         } catch (e) {
             console.error(e);
@@ -70,7 +72,7 @@ export class UserStorageGateway implements UserRepository {
 
     async existsByEmail(email: string): Promise<boolean> {
         try {
-            const response = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+            const response = await pool.query('select * from users where email = $1', [email]);
             return response.rows.length > 0;
         } catch (e) {
             console.error(e);
