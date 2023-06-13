@@ -1,9 +1,9 @@
-import * as dotenv from "dotenv";
-import express, {Application, Request, Response} from "express";
-import cors from "cors";
-import userRoutes from "./modules/users/adapters/user.routes";
-import areaRoutes from "./modules/areas/adapters/area.routes";
-import processRoutes from "./modules/process/adapters/process.routes";
+import * as dotenv from 'dotenv';
+import express, {Application, Request, Response} from 'express';
+import cors from 'cors';
+import userRoutes from './modules/users/adapters/user.routes';
+import areaRoutes from './modules/areas/adapters/area.routes';
+import processRoutes from './modules/process/adapters/process.routes';
 
 dotenv.config();
 
@@ -16,7 +16,7 @@ app.use(cors({
     origin: 'http://localhost:3000'
 }))
 
-app.use(express.json({limit: "50mb"}));
+app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded({extended: false}))
 
 app.get('/test', (req:Request, res:Response) => res.send('Welcome to POA (Annual Operational Program)'))
