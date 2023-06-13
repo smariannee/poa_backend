@@ -53,7 +53,7 @@ export class AreaController {
             const payload: SaveAreaDto = {...req.body} as SaveAreaDto;
             const repo: AreaRepository = new AreaStorageGateway();
             const check: ExistAreaByName = new ExistAreaByName(repo);
-            const checkName = check.execute(payload.area);
+            const checkName = check.execute(payload.title);
 
             if (!await checkName) {
 
