@@ -25,7 +25,7 @@ export class AuthStorageGateway implements AuthRepository {
         try {
             const {id, token} = user;
             const response = await pool.query(
-                'UPDATE users SET "reset_token" = $1 WHERE id = $2',[token, id]
+                'UPDATE users SET "reset_token" = $1 WHERE id = $2', [token, id]
             );
             return response.rows[0] > 0;
         } catch (error) {
@@ -33,12 +33,29 @@ export class AuthStorageGateway implements AuthRepository {
         }
     }
 
-    findByResetToken(token: string): Promise<number> {
-        throw new Error('Not Implemented yet')
+    async findByResetToken(token: string): Promise<number> {
+        try {
+            const response = await pool.query(
+                'SELECT id FROM users WHERE reset_token = $1',
+                [token]
+            );
+            return response.rows[0].id;
+        } catch (error) {
+            throw Error('Server Error');
+        }
     }
 
-    resetPassword(user: ResetPwdUserDto): Promise<User> {
-        throw new Error('Not Implemented yet')
+    async resetPassword(user: ResetPwdUserDto): Promise<User> {
+        try {
+            const response = await pool.query(
+                'UPDATE users SET password = $1, reset_token = null WHERE id = $2',
+                [user.newPassword, user.id]
+            );
+            console.log(response)
+            return response.rows[0];
+        } catch (error) {
+            throw Error('Server Error');
+        }
     }
 
 }
