@@ -28,8 +28,7 @@ export class UserStorageGateway implements UserRepository {
 
     async save(user: SaveUserDto): Promise<User> {
         try {
-            const { name, lastname1, lastname2, email, phone_number, extension_number, role } = user;
-            const password = createPassword(name, lastname1, lastname2);
+            const { name, lastname1, lastname2, email, password, phone_number, extension_number, role } = user;
             const response = await pool.query('insert into users(name, lastname1, lastname2, email, password, phone_number, extension_number, role) values($1, $2, $3, $4, $5, $6, $7, $8) returning *', [name, lastname1, lastname2, email, password, phone_number, extension_number, role]);
             return response.rows[0] as User;
         } catch (e) {

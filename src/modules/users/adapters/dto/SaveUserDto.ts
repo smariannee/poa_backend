@@ -5,6 +5,7 @@ export type SaveUserDto = {
     lastname1: string,
     lastname2: string,
     email: string,
+    password: string,
     phone_number?: string,
     extension_number?: string,
     role: Role
