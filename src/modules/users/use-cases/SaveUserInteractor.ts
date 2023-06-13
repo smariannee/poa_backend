@@ -1,6 +1,6 @@
 import { UseCase } from "@/kernel/contracts"
 import { encodeString } from "../../../kernel/jwt"
-import { createPassword } from "../../../utils/functions"
+import { createPassword, sendMailNewUser } from "../../../utils/functions"
 import { validateEmail, validateExtensionNumber, validatePassword, validatePhoneNumber } from "../../../utils/validations"
 import { SaveUserDto } from "../adapters/dto"
 import { Role } from "../entities/role"
@@ -19,6 +19,10 @@ export class SaveUserInteractor implements UseCase<SaveUserDto, User> {
         if (await this.userRepository.existsByEmail(payload.email)) throw Error('Already exists')
         const password = createPassword(name, lastname1, lastname2)
         payload.password = await encodeString(password!)
-        return this.userRepository.save(payload)
+        const user = await this.userRepository.save(payload)
+        if (!user) throw Error('Error saving')
+        const result = sendMailNewUser({email, password}); 
+        if (!result) throw new Error(`Error sending email`);
+        return user
     }
 }
