@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { ResponseApi } from "../../../kernel/types";
+import { ResponseApi } from "@/kernel/types";
 import { User } from "../entities/user";
 import { GetAllUsersInteractor, GetUserInteractor, SaveUserInteractor, UpdateStatusUserInteractor, UpdateUserInteractor } from "../use-cases";
 import { UserRepository } from "../use-cases/ports/user.repository";
