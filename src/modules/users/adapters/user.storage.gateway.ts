@@ -3,6 +3,7 @@ import { createPassword } from "../../../utils/functions";
 import { User } from "../entities/user";
 import { UserRepository } from "../use-cases/ports/user.repository";
 import { SaveUserDto, UpdateStatusUserDto, UpdateUserDto } from "./dto";
+import { UpdatePasswordUserDto } from "./dto/UpdatePasswordUserDto";
 
 export class UserStorageGateway implements UserRepository {
 
@@ -59,6 +60,17 @@ export class UserStorageGateway implements UserRepository {
         }
     }
 
+    async updatePassword(user: UpdatePasswordUserDto): Promise<User> {
+        try {
+            const { id, new_password } = user;
+            const response = await pool.query('update users set password = $2 where id = $1 returning *', [ id, new_password ]);
+            return response.rows[0] as User;
+        } catch (e) {
+            console.error(e);
+            throw Error('Server Error');
+        }
+    }
+
     async existsById(id: number): Promise<boolean> {
         try {
             const response = await pool.query('select * from users where id = $1', [id]);
@@ -73,6 +85,16 @@ export class UserStorageGateway implements UserRepository {
         try {
             const response = await pool.query('select * from users where email = $1', [email]);
             return response.rows.length > 0;
+        } catch (e) {
+            console.error(e);
+            throw Error('Server Error');
+        }
+    }
+
+    async findByEmail(email: string): Promise<User> {
+        try {
+            const response = await pool.query('select * from users where email = $1', [email]);
+            return response.rows[0] as User;
         } catch (e) {
             console.error(e);
             throw Error('Server Error');

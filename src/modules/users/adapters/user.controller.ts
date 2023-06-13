@@ -6,6 +6,8 @@ import { UserRepository } from "../use-cases/ports/user.repository";
 import { UserStorageGateway } from "./user.storage.gateway";
 import { SaveUserDto, UpdateStatusUserDto, UpdateUserDto } from "./dto";
 import { validateError } from "../../../utils/error_codes";
+import { UpdatePasswordUserDto } from "./dto/UpdatePasswordUserDto";
+import { UpdatePasswordUserInteractor } from "../use-cases/UpdatePasswordUserInteractor";
 
 export class UserController {
 
@@ -103,6 +105,26 @@ export class UserController {
             const error = validateError(e as Error)
             return res.status(error.code).json(error)
         }
+    }
+
+    static updatePasswordUser = async (req: Request, res: Response): Promise<Response> => {
+        try {
+            const id: number = parseInt(req.params.id)
+            const payload: UpdatePasswordUserDto = {id, ...req.body} as UpdatePasswordUserDto;
+            const repository: UserRepository = new UserStorageGateway();
+            const interactor: UpdatePasswordUserInteractor = new UpdatePasswordUserInteractor(repository);
+            const user: User = await interactor.execute(payload);
+            let body: ResponseApi<User> = {
+                code: 200,
+                error: false,
+                message: 'Updated',
+                data: user,
+            }
+            return res.status(body.code).json(body)
+        } catch (e) {
+            const error = validateError(e as Error)
+            return res.status(error.code).json(error)
+        }        
     }
 
 }
