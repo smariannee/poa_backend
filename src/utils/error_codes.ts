@@ -13,6 +13,8 @@ const errors: {[x: string]: ResponseApi<undefined>} = {
     'Not found': { code: 404, error: true, message: 'Not found' },
     'Bad Request': { code: 400, error: true, message: 'Bad Request' },
     'Incorrect credentials': { code: 400, error: true, message: 'Incorrect credentials check your data' },
+    'Invalid Token': { code: 400, error: true, message: 'Unauthorized' },
+    'Expired Token': { code: 400, error: true, message: 'Unauthorized' },
     'Server Error': { code: 500, error: true, message: 'Internal Server Error' },
 };
 
